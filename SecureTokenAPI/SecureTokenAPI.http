@@ -1,0 +1,6 @@
+@SecureTokenAPI_HostAddress = http://localhost:5139
+
+GET {{SecureTokenAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
