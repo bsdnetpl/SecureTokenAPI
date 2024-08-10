@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35201.85
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecureTokenAPI", "SecureTokenAPI\SecureTokenAPI.csproj", "{929D46E3-8D04-454E-85C2-88DA2F3E4890}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecureTokenAPI", "SecureTokenAPI\SecureTokenAPI.csproj", "{929D46E3-8D04-454E-85C2-88DA2F3E4890}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JwtTokenTests", "JwtTokenTests\JwtTokenTests.csproj", "{BC208D7B-BD63-4D95-BFB3-A6DBA92783B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{929D46E3-8D04-454E-85C2-88DA2F3E4890}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{929D46E3-8D04-454E-85C2-88DA2F3E4890}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{929D46E3-8D04-454E-85C2-88DA2F3E4890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC208D7B-BD63-4D95-BFB3-A6DBA92783B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC208D7B-BD63-4D95-BFB3-A6DBA92783B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC208D7B-BD63-4D95-BFB3-A6DBA92783B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC208D7B-BD63-4D95-BFB3-A6DBA92783B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
