@@ -11,9 +11,9 @@ namespace SecureTokenAPI.Controllers
     [EnableCors]
     public class AdminController : ControllerBase
         {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
-        public AdminController(UserService userService)
+        public AdminController(IUserService userService)
             {
             _userService = userService;
             }
