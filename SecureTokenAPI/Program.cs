@@ -2,17 +2,26 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using NLog;
+using NLog.Web;
 using SecureTokenAPI.DB;
 using SecureTokenAPI.Models;
 using SecureTokenAPI.Services;
 using System.Text;
 
+var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+try
+    {
+    logger.Debug("Init main");
+    var builder = WebApplication.CreateBuilder(args);
 
-var builder = WebApplication.CreateBuilder(args);
+    // Konfiguracja NLog jako dostawcy logowania
+    builder.Logging.ClearProviders();
+    builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+    builder.Host.UseNLog();
+    // Add services to the container.
 
-// Add services to the container.
-
-builder.Services.AddControllers();
+    builder.Services.AddControllers();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -80,3 +89,15 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+   }
+catch (Exception exception)
+    {
+    // NLog: catch setup errors
+        logger.Error(exception, "Stopped program because of exception");
+        throw;
+    }
+finally
+    {
+        // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+        NLog.LogManager.Shutdown();
+    }
