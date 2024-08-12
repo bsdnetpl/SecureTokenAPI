@@ -1,7 +1,9 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SecureTokenAPI.DB;
+using SecureTokenAPI.Models;
 using SecureTokenAPI.Services;
 using System.Text;
 
@@ -47,6 +49,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddTransient<IValidator<UserToken>, UserTokenValidator>();
 // Dodaj konfiguracjê CORS
 builder.Services.AddCors(options =>
 {

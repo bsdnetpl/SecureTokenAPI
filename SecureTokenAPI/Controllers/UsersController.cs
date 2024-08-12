@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SecureTokenAPI.DTO;
 using SecureTokenAPI.Services;
@@ -45,6 +46,30 @@ namespace SecureTokenAPI.Controllers
                 }
 
             return Ok(new { Token = token });
+            }
+        [HttpPut("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] UserRegisterDto request)
+            {
+            if (!ModelState.IsValid)
+                {
+                return BadRequest(ModelState);
+                }
+
+            try
+                {
+                var result = await _userService.ChangePasswordAsync(request.UserName, request.Password);
+
+                if (!result)
+                    {
+                    return BadRequest("Current password is incorrect or user does not exist.");
+                    }
+
+                return Ok("Password changed successfully.");
+                }
+            catch (ValidationException ex)
+                {
+                return BadRequest(new { Errors = ex.Errors.Select(e => e.ErrorMessage) });
+                }
             }
 
         }
