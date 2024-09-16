@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using SecureTokenAPI.DTO;
@@ -9,6 +10,7 @@ namespace SecureTokenAPI.Controllers
     {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors]
     public class UsersController : ControllerBase
         {
         private readonly IUserService _userService;
@@ -37,7 +39,8 @@ namespace SecureTokenAPI.Controllers
                 }
 
             _logger.Info($"User {userRegisterDto.UserName} registered successfully.");
-            return Ok(new { message = "User registered successfully" });
+            //return Ok(new { message = "User registered successfully" });
+            return StatusCode(201, new { message = "User registered successfully" });
             }
 
         [HttpPost("login")]
@@ -81,6 +84,47 @@ namespace SecureTokenAPI.Controllers
                 _logger.Error(ex, $"Validation error during password change for user {request.UserName}.");
                 return BadRequest(new { Errors = ex.Errors.Select(e => e.ErrorMessage) });
                 }
+            }
+       
+        [HttpDelete("delete/{username}")]
+        public async Task<IActionResult> DeleteUser(string username)
+            {
+            if (string.IsNullOrEmpty(username))
+                {
+                _logger.Warn("Attempted to delete user with empty username.");
+                return BadRequest(new { message = "Username cannot be empty." });
+                }
+
+            var result = await _userService.DeleteUserAsync(username);
+
+            if (!result)
+                {
+                _logger.Warn($"Failed to delete user {username}. User not found.");
+                return NotFound(new { message = $"User '{username}' not found." });
+                }
+
+            _logger.Info($"User {username} deleted successfully.");
+            return StatusCode(202, new { message = $"User '{username}' deleted successfully." });
+            }
+    [HttpGet("{username}")]
+        public async Task<IActionResult> GetUserByUsernameAsync(string username)
+            {
+            if (string.IsNullOrEmpty(username))
+                {
+                _logger.Warn("Username cannot be empty when fetching user.");
+                return BadRequest(new { message = "Username cannot be empty." });
+                }
+
+            var user = await _userService.GetUserByUsernameAsync(username);
+
+            if (user == null)
+                {
+                _logger.Warn($"User {username} not found.");
+                return NotFound(new { message = $"User '{username}' not found." });
+                }
+
+            _logger.Info($"User {username} fetched successfully.");
+            return Ok(user);
             }
         }
     }

@@ -79,7 +79,7 @@ namespace SecureTokenAPI.Services
 
             return token;
             }
-        public async Task<bool> ChangePasswordAsync(string username,string newPassword)
+        public async Task<bool> ChangePasswordAsync(string username, string newPassword)
             {
             // Znajdź użytkownika na podstawie nazwy użytkownika
             var user = await _context.UserTokens.FirstOrDefaultAsync(u => u.UserName == username);
@@ -111,6 +111,21 @@ namespace SecureTokenAPI.Services
 
             // Aktualizacja hasła użytkownika
             user.Password = newPasswordHash;
+            await _context.SaveChangesAsync();
+
+            return true;
+            }
+        public async Task<bool> DeleteUserAsync(string username)
+            {
+            // Znajdź użytkownika na podstawie nazwy użytkownika
+            var user = await _context.UserTokens.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+                {
+                return false; // Użytkownik nie został znaleziony
+                }
+
+            // Usuń użytkownika z bazy danych
+            _context.UserTokens.Remove(user);
             await _context.SaveChangesAsync();
 
             return true;

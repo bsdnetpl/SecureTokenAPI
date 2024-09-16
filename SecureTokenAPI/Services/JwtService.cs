@@ -22,13 +22,18 @@ namespace SecureTokenAPI.Services
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>
-        {
-            new Claim(JwtRegisteredClaimNames.Sub, username),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim("UserToken", userToken.ToString())
-        };
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, username),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim("UserToken", userToken.ToString())
+            };
 
-            // Dodaj role do tokena
+           
+            if (!roles.Contains("user"))
+                {
+                roles.Add("user");  
+                }
+
             roles.ForEach(role => claims.Add(new Claim(ClaimTypes.Role, role)));
 
             var token = new JwtSecurityToken(
