@@ -85,7 +85,7 @@ namespace SecureTokenAPI.Controllers
                 return BadRequest(new { Errors = ex.Errors.Select(e => e.ErrorMessage) });
                 }
             }
-       
+
         [HttpDelete("delete/{username}")]
         public async Task<IActionResult> DeleteUser(string username)
             {
@@ -106,7 +106,7 @@ namespace SecureTokenAPI.Controllers
             _logger.Info($"User {username} deleted successfully.");
             return StatusCode(202, new { message = $"User '{username}' deleted successfully." });
             }
-    [HttpGet("{username}")]
+        [HttpGet("{username}")]
         public async Task<IActionResult> GetUserByUsernameAsync(string username)
             {
             if (string.IsNullOrEmpty(username))
@@ -126,5 +126,12 @@ namespace SecureTokenAPI.Controllers
             _logger.Info($"User {username} fetched successfully.");
             return Ok(user);
             }
+
+        [HttpGet("GetAllUsers")]
+        public async Task<IActionResult> GetAllUsers()
+            {
+              return Ok(await _userService.GetAllUsersAsync());
+            }
+
         }
     }
